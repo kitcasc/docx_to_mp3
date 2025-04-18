@@ -56,7 +56,14 @@ def upload_file():
 
 @app.route('/download/<filename>')
 def download_file(filename):
-    return send_file(os.path.join(app.config['OUTPUT_FOLDER'], filename), as_attachment=True, download_name=filename)
+    file_path = os.path.join(app.config['OUTPUT_FOLDER'], filename)
+    response = send_file(file_path, as_attachment=True, download_name=filename, mimetype='audio/mpeg')
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    from urllib.parse import quote
+    response.headers['Content-Disposition'] = f'attachment; filename="{quote(filename)}"'
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -48,7 +48,7 @@
         {% endif %}
         {% if download_link %}
         <p class="success">Conversion successful! Download your audio file:</p>
-        <a href="{{ url_for('download_file', filename=download_link) }}" download>{{ download_link }}</a>
+        <a href="{{ url_for('download_file', filename=download_link) }}" download="{{ download_link }}">{{ download_link }}</a>
         {% endif %}
     </div>
 </body>

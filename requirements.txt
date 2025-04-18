@@ -1,0 +1,5 @@
+flask==2.3.2
+werkzeug==2.3.6
+gtts==2.3.2
+python-docx==0.8.11
+gunicorn==20.1.0

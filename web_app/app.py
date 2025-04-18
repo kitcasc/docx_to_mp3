@@ -5,8 +5,10 @@ from gtts import gTTS
 from docx import Document
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'uploads'
-OUTPUT_FOLDER = 'outputs'
+import os
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+OUTPUT_FOLDER = os.path.join(BASE_DIR, 'outputs')
 ALLOWED_EXTENSIONS = {'docx'}
 
 # Create directories if they don't exist
@@ -57,6 +59,8 @@ def upload_file():
 @app.route('/download/<filename>')
 def download_file(filename):
     file_path = os.path.join(app.config['OUTPUT_FOLDER'], filename)
+    if not os.path.exists(file_path):
+        return render_template('index.html', error=f'File {filename} not found. Please ensure the file has been generated correctly.')
     response = send_file(file_path, as_attachment=True, download_name=filename, mimetype='audio/mpeg')
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
